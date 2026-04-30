@@ -1,5 +1,5 @@
 # data2005-team-project
- [Project Domain Name] - DATA 2005 Team Project
+ [Energy and Utilities] - DATA 2005 Team Project
 
 **Course:** DATA 2005 - Data-Centric Programming  
 **Assessment:** Team Data Processing Project (20%)
@@ -54,7 +54,7 @@ data2005-team-project/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/[username]/data2005-team-project.git
+   git clone https://github.com/[richytaiwo]/data2005-team-project.git
    cd data2005-team-project
 
 2. Create virtual environment:
