@@ -22,7 +22,7 @@ def resample_energy(df):
     return hourly, daily, weekly
 
 def zscore_normalise(df, metrics):
-    # normalise using numpy broadcasting to hit the rubric requirements
+    # normalise using numpy broadcasting
     z_values = {}
     means = {}
     stds = {}
