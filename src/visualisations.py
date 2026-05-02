@@ -30,3 +30,23 @@ def plot_correlation_heatmap(df: pd.DataFrame):
     plt.title("Sensor Data Correlation Heatmap")
     save_current_figure("02_sensor_correlation_heatmap.png")
     
+def plot_daily_trend(daily: pd.DataFrame):
+    _, ax = plt.subplots(figsize=(14, 5))
+    plot_df = daily.reset_index()
+    plot_df["rolling_7d"] = plot_df["global_active_power"].rolling(window=7, min_periods=1).mean()
+
+    sns.lineplot(data=plot_df, x="timestamp", y="global_active_power", ax=ax, linewidth=1.0, label="Daily mean")
+    sns.lineplot(data=plot_df, x="timestamp", y="rolling_7d", ax=ax, linewidth=2.0, label="7-day rolling mean")
+    ax.set_title("Daily Global Active Power with 7-Day Rolling Mean")
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Global Active Power (kW)")
+    save_current_figure("03_daily_active_power.png")
+
+def plot_weekly_trend(weekly: pd.DataFrame):
+    fig, ax = plt.subplots(figsize=(14, 5))
+    plot_df = weekly.reset_index()
+    sns.lineplot(data=plot_df, x="timestamp", y="global_active_power", ax=ax, marker="o")
+    ax.set_title("Weekly Average Global Active Power")
+    ax.set_xlabel("Week")
+    ax.set_ylabel("Global Active Power (kW)")
+    save_current_figure("04_weekly_active_power.png")
