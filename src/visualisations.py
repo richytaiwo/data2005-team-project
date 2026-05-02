@@ -1,49 +1,32 @@
-import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
-import os
+import matplotlib.pyplot as plt
+from src.config import graphs_folder
 
-def plot_hourly(hourly_data, output_path):
-    # log start of chart generation
-    print(f"generating hourly power plot...")
-    
-    # use seaborn theme
-    sns.set_theme(style="darkgrid")
-    
-    plt.figure(figsize=(12, 6))
-    sns.lineplot(data=hourly_data, x=hourly_data.index, y="global_active_power", color="coral")
-    
-    # add labels and title
-    plt.title("average hourly global active power")
-    plt.xlabel("timestamp")
-    plt.ylabel("active power (kw)")
+sns.set_theme(style="whitegrid", context="talk")
+plt.rcParams["figure.dpi"] = 140
+
+def save_current_figure(filename: str):
     plt.tight_layout()
-    
-    # create figures folder if it doesnt exist
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    
-    # save and close
-    plt.savefig(output_path)
+    plt.savefig(graphs_folder / filename, bbox_inches="tight")
     plt.close()
     
-    print(f"saved chart successfully to {output_path}")
-    # end of plot_hourly function
+def plot_hourly_trend(hourly: pd.DataFrame):
+    fig, ax = plt.subplots(figsize=(14, 5))
+    plot_df = hourly.reset_index()
 
-def plot_correlation_heatmap(df, output_path):
-    # check how the different sub-meters correlate with overall power
-    print("generating correlation heatmap...")
-    
+    sns.lineplot(data=plot_df, x="timestamp", y="global_active_power", ax=ax, linewidth=1.2, color="#4C72B0")
+    ax.set_title("Hourly Average Global Active Power")
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Global Active Power (kW)")
+    save_current_figure("01_hourly_active_power.png")
+
+def plot_correlation_heatmap(df: pd.DataFrame):
     plt.figure(figsize=(10, 8))
-    
-    # grab only the numeric columns for the math
     numeric_df = df.select_dtypes(include=['float64', 'int32', 'int64'])
-    
-    # calculate correlations and plot them
     correlation_matrix = numeric_df.corr()
+    
     sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f")
-    
-    plt.title("sensor data correlation heatmap")
-    plt.tight_layout()
-    
-    plt.savefig(output_path)
-    plt.close()
+    plt.title("Sensor Data Correlation Heatmap")
+    save_current_figure("02_sensor_correlation_heatmap.png")
     

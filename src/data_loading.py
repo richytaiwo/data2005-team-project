@@ -24,7 +24,7 @@ def load_dataset(file_path):
         print(f"Something went wrong: {e}")
         raise
 
-# This part only runs if we execute THIS file directly
+# This part only runs if we execute this file directly
 if __name__ == "__main__":
     from config import raw_csv_file
     

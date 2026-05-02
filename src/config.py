@@ -1,6 +1,6 @@
 from pathlib import Path
 
-# getting the main folder path so the script works on everyone's laptop in the team
+# getting the main folder path so the script works on everyone's laptop
 project_root = Path(__file__).resolve().parent.parent
 
 # paths for reading and saving our csv files

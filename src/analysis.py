@@ -21,26 +21,39 @@ def resample_energy(df):
 
     return hourly, daily, weekly
 
-def zscore_normalise(df, metrics):
-    # normalise using numpy broadcasting
-    z_values = {}
-    means = {}
-    stds = {}
+def calculate_summary(df):
+    stats = df["global_active_power"].agg(["mean", "std", "min", "max", "median"])
+    peak_timestamp = df["global_active_power"].idxmax()
+    peak_value = df.loc[peak_timestamp, "global_active_power"]
 
-    for col in metrics:
-        # convert column to a numpy array for the fast math
-        data_array = df[col].to_numpy()
-        
-        # get mean and standard deviation ignoring any lingering nan values
-        col_mean = np.nanmean(data_array)
-        col_std = np.nanstd(data_array)
-        
-        # broadcast the calculation across the whole array at once
-        # this is much faster than looping through rows one by one
-        z_score = (data_array - col_mean) / col_std
-        
-        z_values[col] = z_score
-        means[col] = col_mean
-        stds[col] = col_std
-        
-    return z_values, means, stds 
+    return {
+        "mean": float(stats["mean"]),
+        "std": float(stats["std"]),
+        "min": float(stats["min"]),
+        "max": float(stats["max"]),
+        "median": float(stats["median"]),
+        "peak_timestamp": peak_timestamp,
+        "peak_value": float(peak_value),
+    }
+
+def top_peak_periods(hourly: pd.DataFrame, n: int = 5) -> pd.DataFrame:
+    peaks = hourly["global_active_power"].nlargest(n).to_frame(name="hourly_mean_active_power")
+    peaks["timestamp"] = peaks.index
+    return peaks[["timestamp", "hourly_mean_active_power"]]
+
+def zscore_normalise(df: pd.DataFrame, columns):
+    values = df[columns].to_numpy(dtype=float)
+
+    means = values.mean(axis=0)
+    stds = values.std(axis=0, ddof=0)
+    stds = np.where(stds == 0, 1, stds)
+
+    z_values = (values - means) / stds
+    z_df = pd.DataFrame(
+        z_values,
+        index=df.index,
+        columns=[f"{col}_zscore" for col in columns],
+    )
+
+    return z_df, means, stds
+
