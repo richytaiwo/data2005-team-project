@@ -1,7 +1,7 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from src.config import graphs_folder
+from src.config import graphs_folder, time_categories, days_of_week
 
 sns.set_theme(style="whitegrid", context="talk")
 plt.rcParams["figure.dpi"] = 140
@@ -69,3 +69,30 @@ def plot_box_by_hour(df: pd.DataFrame):
     ax.set_xlabel("Hour of Day")
     ax.set_ylabel("Global Active Power (kW)")
     save_current_figure("06_boxplot_by_hour.png")
+
+def plot_violin_by_time_of_day(df: pd.DataFrame):
+    _, ax = plt.subplots(figsize=(12, 5))
+    sns.violinplot(data=df.reset_index(), x="time_period", y="global_active_power", order=time_categories, ax=ax, inner="quartile", cut=0)
+    ax.set_title("Global Active Power by Time of Day")
+    ax.set_xlabel("Time of Day")
+    ax.set_ylabel("Global Active Power (kW)")
+    save_current_figure("07_violin_by_time_of_day.png")
+
+def plot_weekday_hour_heatmap(df: pd.DataFrame):
+    pivot = (df.reset_index().pivot_table(index="day_of_week", columns="hour", values="global_active_power", aggfunc="mean").reindex(days_of_week))
+    _, ax = plt.subplots(figsize=(14, 5))
+    sns.heatmap(pivot, ax=ax, cmap="viridis")
+    ax.set_title("Average Global Active Power by Weekday and Hour")
+    ax.set_xlabel("Hour of Day")
+    ax.set_ylabel("Day of Week")
+    save_current_figure("08_weekday_hour_heatmap.png")
+
+def plot_normalised_metrics(z_df: pd.DataFrame):
+    _, ax = plt.subplots(figsize=(12, 5))
+    long_df = z_df.reset_index(drop=True).melt(var_name="metric", value_name="zscore")
+
+    sns.boxplot(data=long_df, x="metric", y="zscore", ax=ax)
+    ax.set_title("Broadcast-Normalised Metrics (Z-Scores)")
+    ax.set_xlabel("Metric")
+    ax.set_ylabel("Z-Score")
+    save_current_figure("09_normalised_metrics_boxplot.png")

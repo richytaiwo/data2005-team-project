@@ -3,9 +3,10 @@ from src.config import raw_csv_file, time_categories, graphs_folder
 from src.data_loading import load_dataset
 from src.preprocessing import clean_and_prepare_data
 from src.analysis import resample_energy, calculate_summary, zscore_normalise, top_peak_periods
-from src.visualisations import plot_hourly_trend, plot_correlation_heatmap, plot_daily_trend, plot_weekly_trend, plot_distribution, plot_box_by_hour
+from src.visualisations import plot_hourly_trend, plot_correlation_heatmap, plot_daily_trend, plot_weekly_trend, plot_distribution, plot_box_by_hour,plot_violin_by_time_of_day, plot_weekday_hour_heatmap, plot_normalised_metrics
+
 def run_pipeline():
-    # load data
+# load data
     df = load_dataset(raw_csv_file)
 
     # preprocess data
@@ -13,10 +14,10 @@ def run_pipeline():
 
     # time-series analysis
     hourly, daily, weekly = resample_energy(df_clean)
-    
+        
     # descriptive statistics
     summary = calculate_summary(df_clean)
-    
+        
     # normalisation
     metrics_to_scale = ["global_active_power", "global_reactive_power", "voltage", "global_intensity"]
     z_df, means, stds = zscore_normalise(df_clean, metrics_to_scale)
@@ -32,7 +33,7 @@ def run_pipeline():
     print(f"Peak timestamp:    {summary['peak_timestamp']}")
     print(f"Peak value:        {summary['peak_value']:.3f} kW")
 
-    # visualisations
+        # visualisations
     print("\nGenerating charts")
     plot_hourly_trend(hourly)
     plot_correlation_heatmap(df_clean)
@@ -40,6 +41,9 @@ def run_pipeline():
     plot_weekly_trend(weekly)
     plot_distribution(df_clean)
     plot_box_by_hour(df_clean)
+    plot_violin_by_time_of_day(df_clean)
+    plot_weekday_hour_heatmap(df_clean)
+    plot_normalised_metrics(z_df)
 
     print(f"\nPipeline Complete. Saved figures to: {graphs_folder}")
 
