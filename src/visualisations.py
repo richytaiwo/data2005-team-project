@@ -43,10 +43,29 @@ def plot_daily_trend(daily: pd.DataFrame):
     save_current_figure("03_daily_active_power.png")
 
 def plot_weekly_trend(weekly: pd.DataFrame):
-    fig, ax = plt.subplots(figsize=(14, 5))
+    _, ax = plt.subplots(figsize=(14, 5))
     plot_df = weekly.reset_index()
     sns.lineplot(data=plot_df, x="timestamp", y="global_active_power", ax=ax, marker="o")
     ax.set_title("Weekly Average Global Active Power")
     ax.set_xlabel("Week")
     ax.set_ylabel("Global Active Power (kW)")
     save_current_figure("04_weekly_active_power.png")
+
+def plot_distribution(df: pd.DataFrame):
+    _, ax = plt.subplots(figsize=(12, 5))
+    sample = df["global_active_power"].sample(n=min(50000, len(df)), random_state=42)
+
+    sns.histplot(sample, bins=60, stat="density", element="step", fill=False, ax=ax, color="tab:blue")
+    sns.kdeplot(sample, ax=ax, color="black", linewidth=2)
+    ax.set_title("Distribution of Global Active Power")
+    ax.set_xlabel("Global Active Power (kW)")
+    ax.set_ylabel("Density")
+    save_current_figure("05_distribution_active_power.png")
+
+def plot_box_by_hour(df: pd.DataFrame):
+    _, ax = plt.subplots(figsize=(14, 5))
+    sns.boxplot(data=df.reset_index(), x="hour", y="global_active_power", ax=ax)
+    ax.set_title("Global Active Power by Hour of Day")
+    ax.set_xlabel("Hour of Day")
+    ax.set_ylabel("Global Active Power (kW)")
+    save_current_figure("06_boxplot_by_hour.png")

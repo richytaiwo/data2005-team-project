@@ -3,7 +3,7 @@ from src.config import raw_csv_file, time_categories, graphs_folder
 from src.data_loading import load_dataset
 from src.preprocessing import clean_and_prepare_data
 from src.analysis import resample_energy, calculate_summary, zscore_normalise, top_peak_periods
-from src.visualisations import plot_hourly_trend, plot_correlation_heatmap, plot_daily_trend, plot_weekly_trend
+from src.visualisations import plot_hourly_trend, plot_correlation_heatmap, plot_daily_trend, plot_weekly_trend, plot_distribution, plot_box_by_hour
 def run_pipeline():
     # load data
     df = load_dataset(raw_csv_file)
@@ -38,6 +38,8 @@ def run_pipeline():
     plot_correlation_heatmap(df_clean)
     plot_daily_trend(daily)
     plot_weekly_trend(weekly)
+    plot_distribution(df_clean)
+    plot_box_by_hour(df_clean)
 
     print(f"\nPipeline Complete. Saved figures to: {graphs_folder}")
 
