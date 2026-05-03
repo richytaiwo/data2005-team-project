@@ -38,14 +38,3 @@ def clean_and_prepare_data(df, time_bins_labels):
     print("cleaning complete. data ready")
     return df
 
-# temporary test block so you can verify it works locally
-if __name__ == "__main__":
-    from data_loading import load_dataset
-    from config import raw_csv_file, time_categories
-    
-    print("testing preprocessing")
-    raw_data = load_dataset(raw_csv_file)
-    cleaned_data = clean_and_prepare_data(raw_data, time_categories)
-    
-    print("first 5 rows of cleaned data:")
-    print(cleaned_data.head())

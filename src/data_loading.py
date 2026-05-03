@@ -24,13 +24,3 @@ def load_dataset(file_path):
         print(f"Something went wrong: {e}")
         raise
 
-# This part only runs if we execute this file directly
-if __name__ == "__main__":
-    from config import raw_csv_file
-    
-    print("--- Manual Test Running ---")
-    data = load_dataset(raw_csv_file)
-    
-    if data is not None:
-        print("First 5 rows of our data:")
-        print(data.head())
