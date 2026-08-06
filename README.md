@@ -1,16 +1,13 @@
 # data2005-team-project
  [Energy and Utilities] - DATA 2005 Team Project
 
-**Course:** DATA 2005 - Data-Centric Programming  
-**Assessment:** Team Data Processing Project (20%)
-
 ## Team Members
 
 | Name | Role | GitHub |
 |------|------|--------|
-| [Rory Maher] | Data Engineer | [@rmtudublin] |
+| [Monike Santos] | Data Engineer | [@monikeeoz] |
 | [Rory Maher] | Data Analyst | [@rmtudublin] |
-| [Richard Taiwo] | Visualization Lead | [@richytaiwo] |
+| [Arshdip Chera] | Visualization Lead | [] |
 | [Richard Taiwo] | Documentation Lead | [@richytaiwo] |
 
 ## Project Description
