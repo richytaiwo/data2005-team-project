@@ -5,9 +5,9 @@
 
 | Name | Role | GitHub |
 |------|------|--------|
-| [Monike Santos] | Data Engineer | [@monikeeoz] |
+| [Richard Taiwo] | Data Engineer | [@richytaiwo] |
 | [Rory Maher] | Data Analyst | [@rmtudublin] |
-| [Arshdip Chera] | Visualization Lead | [] |
+| [Richard Taiwo] | Visualization Lead | [] |
 | [Richard Taiwo] | Documentation Lead | [@richytaiwo] |
 
 ## Project Description
